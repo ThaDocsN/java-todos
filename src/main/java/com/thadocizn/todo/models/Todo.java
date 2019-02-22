@@ -26,6 +26,14 @@ public class Todo {
     public Todo() {
     }
 
+    public long getTodoid() {
+        return todoid;
+    }
+
+    public void setTodoid(long todoid) {
+        this.todoid = todoid;
+    }
+
     public String getDescription() {
         return description;
     }

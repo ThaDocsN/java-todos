@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "Todo Application", description = "Classic Todo Application")
 @RestController
@@ -67,6 +68,17 @@ public class TodoController {
         return userRepo.save(user);
     }
 
+    @PutMapping("/users/userid/{userid}")
+    public Users updateUser(@RequestBody Users newUser, @PathVariable long userid) throws URISyntaxException{
+        Optional<Users> userToUpdate = userRepo.findById(userid);
+        if(userToUpdate.isPresent()){
+            newUser.setUserid(userid);
+            userRepo.save(newUser);
+            return newUser;
+        }
+        return null;
+    }
+
     @DeleteMapping("/users/id/{id}")
     public Users deleteUser(@PathVariable long id)
     {
@@ -96,4 +108,76 @@ public class TodoController {
             return null;
         }
     }
+
+    @ApiOperation(value = "List all todos and the user name", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully received list"),
+            @ApiResponse(code = 401, message = "You are not authorized here"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
+    @GetMapping("/todos/users")
+    public List<Object[]> getTodosWithUsers(){
+        List<Object[]> todosList = todoRepo.getTodosWithUsers();
+        if(todosList != null){
+            return todosList;
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "List all todos that are not done", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully received list"),
+            @ApiResponse(code = 401, message = "You are not authorized here"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
+    @GetMapping("/todos/active")
+    public List<Object[]> getActiveTodos(){
+        List<Object[]> todosList = todoRepo.getTodosActive();
+        if(todosList != null){
+            return todosList;
+        }
+        return null;
+    }
+    @PostMapping("/todos")
+    public Todo addTodo(@RequestBody Todo todo) throws URISyntaxException {
+        return todoRepo.save(todo);
+    }
+
+    @ApiOperation(value = "Updates todo by id", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully updated todo"),
+            @ApiResponse(code = 401, message = "You are not authorized here"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
+    @PutMapping("/todos/todoid/{todoid}")
+    public Todo updateTodo(@RequestBody Todo newTodo, @PathVariable long todoid) throws URISyntaxException{
+        Optional<Todo> todoToUpdate = todoRepo.findById(todoid);
+        if(todoToUpdate.isPresent()){
+            newTodo.setTodoid(todoid);
+            todoRepo.save(newTodo);
+            return newTodo;
+        }
+        return null;
+    }
+
+    @ApiOperation(value = "Deletes a todo based off of the given id", response = List.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully deleted todo"),
+            @ApiResponse(code = 401, message = "You are not authorized here"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
+    @DeleteMapping("/todos/todoid/{todoid}")
+    public Todo deleteTodo(@PathVariable long todoid){
+        var foundTodo = todoRepo.findById(todoid);
+        if(foundTodo.isPresent()){
+            todoRepo.deleteById(todoid);
+            return foundTodo.get();
+        }
+        return null;
+    }
+
 }
