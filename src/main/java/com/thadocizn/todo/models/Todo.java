@@ -12,6 +12,7 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long todoid;
+
     @Column(nullable = false)
     private String description;
 
