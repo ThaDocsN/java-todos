@@ -22,8 +22,18 @@ public class Todo {
     private Users users;
 
     private boolean completed ;
+    private String datestarted;
+
 
     public Todo() {
+    }
+
+    public String getDatestarted() {
+        return datestarted;
+    }
+
+    public void setDatestarted(String datestarted) {
+        this.datestarted = datestarted;
     }
 
     public long getTodoid() {
