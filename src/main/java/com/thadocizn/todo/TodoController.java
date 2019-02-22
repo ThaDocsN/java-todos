@@ -54,7 +54,7 @@ public class TodoController {
 
     @GetMapping("/users/username/{name}")
     public Users findUser(@PathVariable String name){
-        var foundUser = userRepo.findByName(name);
+        var foundUser = userRepo.findByUsername(name);
         if (foundUser != null){
             return foundUser;
         }else {
