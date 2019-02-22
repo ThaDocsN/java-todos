@@ -41,7 +41,7 @@ public class TodoController {
     }
 
     @ApiOperation(value = "User based off of user id", response = Users.class)
-    @GetMapping("/user/id/{id}")
+    @GetMapping("/users/id/{id}")
     public Users findUserId(
 
             @ApiParam(value = "This is the user you seek", required = true) @PathVariable long id) {
@@ -49,13 +49,19 @@ public class TodoController {
         if (foundUser.isPresent()) {
             return foundUser.get();
         } else {
-
             return null;
-
         }
-
     }
 
+    @GetMapping("/users/username/{name}")
+    public Users findUser(@PathVariable String name){
+        var foundUser = userRepo.findByName(name);
+        if (foundUser != null){
+            return foundUser;
+        }else {
+            return null;
+        }
+    }
     // to dos
     @GetMapping("/todos")
     public List<Todo> allTodos() {
