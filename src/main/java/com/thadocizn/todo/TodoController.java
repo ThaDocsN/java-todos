@@ -7,11 +7,9 @@ import com.thadocizn.todo.repository.UserRepository;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @Api(value = "Todo Application", description = "Classic Todo Application")
@@ -61,6 +59,25 @@ public class TodoController {
         }else {
             return null;
         }
+    }
+
+    @PostMapping("/users")
+    public Users newUser(@RequestBody Users user) throws URISyntaxException
+    {
+        return userRepo.save(user);
+    }
+
+    @DeleteMapping("/users/id/{id}")
+    public Users deleteUser(@PathVariable long id)
+    {
+        var foundUser = userRepo.findById(id);
+        if (foundUser.isPresent()) {
+            userRepo.deleteById(id);
+            return foundUser.get();
+        } else {
+            return null;
+        }
+
     }
     // to dos
     @GetMapping("/todos")
