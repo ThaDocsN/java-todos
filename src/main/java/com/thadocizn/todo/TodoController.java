@@ -79,9 +79,21 @@ public class TodoController {
         }
 
     }
+
     // to dos
     @GetMapping("/todos")
     public List<Todo> allTodos() {
         return todoRepo.findAll();
+    }
+
+    @ApiOperation(value = "Todo based off of todo id", response = Todo.class)
+    @GetMapping("/todos/todoid/{todoid}")
+    public Todo findTodoId(@ApiParam(value = "This is the todo you seek", required = true) @PathVariable long id) {
+        var foundTodo = todoRepo.findById(id);
+        if (foundTodo.isPresent()) {
+            return foundTodo.get();
+        } else {
+            return null;
+        }
     }
 }
