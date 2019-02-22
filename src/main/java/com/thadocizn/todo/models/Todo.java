@@ -11,7 +11,7 @@ public class Todo {
     //todo comeback for date
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long todoid;
+    private int todoid;
 
     @Column(nullable = false)
     private String description;
@@ -30,7 +30,7 @@ public class Todo {
         return todoid;
     }
 
-    public void setTodoid(long todoid) {
+    public void setTodoid(int todoid) {
         this.todoid = todoid;
     }
 

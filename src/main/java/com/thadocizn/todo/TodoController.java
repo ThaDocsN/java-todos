@@ -43,7 +43,7 @@ public class TodoController {
     @GetMapping("/users/id/{id}")
     public Users findUserId(
 
-            @ApiParam(value = "This is the user you seek", required = true) @PathVariable long id) {
+            @ApiParam(value = "This is the user you seek", required = true) @PathVariable int id) {
         var foundUser = userRepo.findById(id);
         if (foundUser.isPresent()) {
             return foundUser.get();
@@ -69,7 +69,7 @@ public class TodoController {
     }
 
     @PutMapping("/users/userid/{userid}")
-    public Users updateUser(@RequestBody Users newUser, @PathVariable long userid) throws URISyntaxException{
+    public Users updateUser(@RequestBody Users newUser, @PathVariable int userid) throws URISyntaxException{
         Optional<Users> userToUpdate = userRepo.findById(userid);
         if(userToUpdate.isPresent()){
             newUser.setUserid(userid);
@@ -80,7 +80,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/users/id/{id}")
-    public Users deleteUser(@PathVariable long id)
+    public Users deleteUser(@PathVariable int id)
     {
         var foundUser = userRepo.findById(id);
         if (foundUser.isPresent()) {
@@ -100,7 +100,7 @@ public class TodoController {
 
     @ApiOperation(value = "Todo based off of todo id", response = Todo.class)
     @GetMapping("/todos/todoid/{todoid}")
-    public Todo findTodoId(@ApiParam(value = "This is the todo you seek", required = true) @PathVariable long id) {
+    public Todo findTodoId(@ApiParam(value = "This is the todo you seek", required = true) @PathVariable int id) {
         var foundTodo = todoRepo.findById(id);
         if (foundTodo.isPresent()) {
             return foundTodo.get();
@@ -153,7 +153,7 @@ public class TodoController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     @PutMapping("/todos/todoid/{todoid}")
-    public Todo updateTodo(@RequestBody Todo newTodo, @PathVariable long todoid) throws URISyntaxException{
+    public Todo updateTodo(@RequestBody Todo newTodo, @PathVariable int todoid) throws URISyntaxException{
         Optional<Todo> todoToUpdate = todoRepo.findById(todoid);
         if(todoToUpdate.isPresent()){
             newTodo.setTodoid(todoid);
@@ -171,7 +171,7 @@ public class TodoController {
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
     @DeleteMapping("/todos/todoid/{todoid}")
-    public Todo deleteTodo(@PathVariable long todoid){
+    public Todo deleteTodo(@PathVariable int todoid){
         var foundTodo = todoRepo.findById(todoid);
         if(foundTodo.isPresent()){
             todoRepo.deleteById(todoid);

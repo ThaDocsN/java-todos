@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface TodoRepository extends JpaRepository<Todo, Long> {
+public interface TodoRepository extends JpaRepository<Todo, Integer> {
 
     @Query(value = "SELECT u.username, t.description, t.completed FROM todo t, users u WHERE t.userid = u.userid", nativeQuery = true)
     List<Object[]> getTodosWithUsers();
